@@ -20,17 +20,17 @@ public class Ax extends Recorrido {
 
     AreaGrafo grafoG;
     LinkedList<String> visitados;
-    boolean graficar;
+    boolean graficar,minimo;
     Resultados resultados;
     long retardo;
     int ic;
-    public Ax(Resultados resultados,AreaGrafo grafoG, long retardo,boolean graficar) {
+    public Ax(Resultados resultados,AreaGrafo grafoG, long retardo,boolean graficar,boolean minimo) {
         this.grafoG = grafoG;
         this.graficar = graficar;
         visitados = new LinkedList<String>();
         this.resultados=resultados;
         this.retardo=retardo;
-        
+        this.minimo=minimo;
     }
     LinkedList<Nodo> cola;
 
@@ -46,7 +46,7 @@ public class Ax extends Recorrido {
         while (cont<nmObj && visitados.size() <= max) {
             if (!cola.isEmpty()) {
                 imprimirCola();
-                Nodo elemento = getNodoMejor(cola, true, destinos);//Optener el nodo con mejor valor
+                Nodo elemento = getNodoMejor(cola,destinos);//Optener el nodo con mejor valor
                 
                     if(destinos.contains(elemento.getNombre())){grafoG.setColor(Color.BLUE.darker());}else{grafoG.setColor(Color.GRAY.darker());}
                     grafoG.resaltar(elemento.getNombre(), true);
@@ -90,7 +90,7 @@ public class Ax extends Recorrido {
         grafoG.resaltar(null, false);
     }
 
-    public Nodo getNodoMejor(LinkedList<Nodo> cola, boolean minimo, String destinos) {
+    public Nodo getNodoMejor(LinkedList<Nodo> cola, String destinos) {
         int c = 0;
         float min = cola.get(c).getValor()+cola.get(c).getAcumulador();
         for (int i = 1; i < cola.size(); i++) {
@@ -102,9 +102,7 @@ public class Ax extends Recorrido {
             }else{valorNodo=nodo.getValor();}
                 if (minimo) {
                     if (valorNodo+nodo.getAcumulador() < min) {
-                        
                         min = valorNodo+nodo.getAcumulador();c=i;
-                        //print("Nodo evaluado como menor: "+nodo.getNombre()+"  "+min);
                     }
                 } else {
                     if (valorNodo+nodo.getAcumulador() > min) {

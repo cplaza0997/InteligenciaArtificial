@@ -24,12 +24,14 @@ public class Amplitud implements Algoritmo{
     boolean graficar;
     Resultados resultados;
     long retardo;
+    
     public Amplitud(Resultados resultados,AreaGrafo grafoG,long retardo,boolean graficar){
         this.grafoG=grafoG;
         this.graficar=graficar;
         visitados=new LinkedList<String>();
         this.resultados=resultados;
         this.retardo=retardo;
+        
     }
     LinkedList<Nodo> cola;
     @Override
@@ -45,8 +47,6 @@ public class Amplitud implements Algoritmo{
             if(!cola.isEmpty()){
             imprimirCola();
             Nodo elemento=cola.pop();
-            
-                    
                     if(destinos.contains(elemento.getNombre())){grafoG.setColor(Color.BLUE.darker());}else{grafoG.setColor(Color.GRAY.darker());}
                     grafoG.resaltar(elemento.getNombre(), true);
             if (graficar) {        try {

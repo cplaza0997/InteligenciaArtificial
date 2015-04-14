@@ -412,7 +412,7 @@ public class Principal extends javax.swing.JFrame {
         Buscar dialog = new Buscar(new javax.swing.JFrame(), true);
         dialog.setVisible(true);
         if(dialog.esValido()){
-             Ejecucion ej=new Ejecucion(resultados,grafoG,nodos.get(dialog.getOrigen()), aristas,dialog.getDestinos(),nodos.size(),dialog.getTiempo(),dialog.graficar());
+             Ejecucion ej=new Ejecucion(resultados,grafoG,nodos.get(dialog.getOrigen()), aristas,dialog.getDestinos(),nodos.size(),dialog.getTiempo(),dialog.graficar(),dialog.esMinimo());
             ej.start();
             resultados.setVisible(true);
         }

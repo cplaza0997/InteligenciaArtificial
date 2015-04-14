@@ -24,6 +24,7 @@ public class Ejecucion extends Thread{
     String destinos;
     int maximo;
     boolean graficar;
+    boolean minimo;
     Resultados resultados;
     long retardo;
     @Override
@@ -38,12 +39,12 @@ public class Ejecucion extends Thread{
         am.buscar(grafo, aristas,destinos,maximo);
         Profundidad pr=new Profundidad(resultados,grafoG,retardo,graficar);
         pr.buscar(grafo, aristas,destinos,maximo);
-        Ax a=new Ax(resultados,grafoG,retardo,graficar);
+        Ax a=new Ax(resultados,grafoG,retardo,graficar,minimo);
         a.buscar(grafo, aristas,destinos,maximo);
             
 
     }
-    public Ejecucion(Resultados resultados,AreaGrafo grafoG,Nodo grafo, HashMap<String, Arista> aristas, String destinos, int maximo,long retardo, boolean graficar) {
+    public Ejecucion(Resultados resultados,AreaGrafo grafoG,Nodo grafo, HashMap<String, Arista> aristas, String destinos, int maximo,long retardo, boolean graficar,boolean minimo) {
         this.grafoG=grafoG;
         this.grafo=grafo;
         this.aristas=aristas; 
@@ -52,5 +53,6 @@ public class Ejecucion extends Thread{
         this.destinos=destinos;
         this.maximo=maximo;
         this.resultados=resultados;
+        this.minimo=minimo;
     }
 }

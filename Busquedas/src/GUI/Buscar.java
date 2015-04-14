@@ -48,6 +48,7 @@ public class Buscar extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         titulo = new javax.swing.JLabel();
         tiempo = new javax.swing.JTextField();
+        tipo = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -94,7 +95,7 @@ public class Buscar extends javax.swing.JDialog {
                 cancelarActionPerformed(evt);
             }
         });
-        getContentPane().add(cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
+        getContentPane().add(cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +103,7 @@ public class Buscar extends javax.swing.JDialog {
                 aceptarActionPerformed(evt);
             }
         });
-        getContentPane().add(aceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 81, -1));
+        getContentPane().add(aceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 81, -1));
 
         error.setFont(new java.awt.Font("TINspireKeysCX", 0, 13)); // NOI18N
         error.setForeground(new java.awt.Color(255, 51, 51));
@@ -144,8 +145,20 @@ public class Buscar extends javax.swing.JDialog {
         });
         getContentPane().add(tiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 90, -1));
 
+        tipo.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        tipo.setForeground(new java.awt.Color(255, 255, 255));
+        tipo.setSelected(true);
+        tipo.setText("Minimo");
+        tipo.setOpaque(false);
+        tipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tipoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
+
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/fondo.jpg"))); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 180));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 210));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -201,6 +214,10 @@ public class Buscar extends javax.swing.JDialog {
             evt.consume();
         }       
     }//GEN-LAST:event_tiempoKeyTyped
+
+    private void tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoActionPerformed
+        if(tipo.isSelected()){tipo.setText("Minimo");}else{tipo.setText("Maximo");}
+    }//GEN-LAST:event_tipoActionPerformed
     public boolean esValido(){return validez;}
     public String getOrigen(){
         return origen.getText();
@@ -213,6 +230,9 @@ public class Buscar extends javax.swing.JDialog {
     }
     public boolean graficar(){
         return graficar.isSelected();
+    }
+    public boolean esMinimo(){
+        return tipo.isSelected();
     }
     /**
      * @param args the command line arguments
@@ -270,6 +290,7 @@ public class Buscar extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField origen;
     private javax.swing.JTextField tiempo;
+    private javax.swing.JCheckBox tipo;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }
