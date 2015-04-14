@@ -25,7 +25,7 @@ public class Validacion {
         }
         return false;
     }
-    public boolean validarDestinos(String nombres){
+    public static boolean validarDestinos(String nombres){
         if(nombres!=null && !"".equals(nombres)){
             if(nombres.split(",").length*2-1==nombres.length()){
                 return true;
@@ -33,7 +33,7 @@ public class Validacion {
         }
         return false;
     }
-    public boolean verificarNivel(String nivel){
+    public static boolean verificarNivel(String nivel){
         if(nivel!=null && !"".equals(nivel) && !"0".equals(nivel)){return true;}//requiere verificar nivel
         return false;//No se requiere verificar nivel
     }

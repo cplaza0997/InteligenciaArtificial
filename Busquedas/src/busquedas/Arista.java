@@ -13,7 +13,7 @@ public class Arista {
     private String nodo1;
     private String nodo2;
     private float valor;
-    public Arista(String nodo1,String nodo2,float valor){this.nodo1=nodo1;this.nodo2=nodo2;}
+    public Arista(String nodo1,String nodo2,float valor){this.nodo1=nodo1;this.nodo2=nodo2;this.valor=valor;}
     public String getNodo1() {
         return nodo1;
     }

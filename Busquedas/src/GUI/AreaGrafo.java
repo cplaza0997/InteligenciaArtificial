@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import busquedas.Amplitud;
 import busquedas.Arista;
 import busquedas.Nodo;
 import java.awt.Color;
@@ -22,18 +23,18 @@ import java.util.Map;
  *
  * @author Karlo
  */
-public class Grafo extends javax.swing.JPanel {
+public class AreaGrafo extends javax.swing.JPanel {
 
     //Graphics2D g;//Se especifica donde se graficara los nodos y aristas
-    boolean gnodo, garista, gmove, gselect, mover;//Una bandera para graficar nodos y arista
+    boolean gnodo, garista, gmove, gselect, mover,ejecutando;//Una bandera para graficar nodos y arista
     int xm, ym;//Posicion del mouse en el area de dibujo
     int radio = 40;
     HashMap<String, int[]> nodosG;
     LinkedList<String[]> aristasG;
-    
+    Color colorVar;
     HashMap<String,Nodo> nodos;
     HashMap<String,Arista> aristas;
-    
+    String nodoEvaluado;
     Principal principal;
     String nodoSelect, inicio, fin;
     boolean drop;
@@ -41,10 +42,12 @@ public class Grafo extends javax.swing.JPanel {
     /**
      * Creates new form Grafo
      */
-    public Grafo(Principal principal) {
+    public AreaGrafo(Principal principal) {
         initComponents();
         inicializar();
+        colorVar=Color.GREEN.brighter();
         this.principal = principal;
+        nodoEvaluado=null;
     }
 
     public void setArreglos(HashMap<String, int[]> nodos, LinkedList<String[]> aristas) {
@@ -84,6 +87,7 @@ public class Grafo extends javax.swing.JPanel {
         nodoSelect = null;
         drop = true;
         mover = false;
+        ejecutando=false;
     }
 
     @Override
@@ -142,8 +146,9 @@ public class Grafo extends javax.swing.JPanel {
             String nodo = next.getKey();
             x = next.getValue()[0];
             y = next.getValue()[1];
-            if (gselect && nodoSelect == nodo) {
-                g.setPaint(Color.GREEN.brighter());
+            //print("Graficando.....>>>>");
+            if ((gselect && nodo.equals(nodoSelect))|| (ejecutando && nodo.equals(nodoEvaluado))) {
+                g.setPaint(colorVar);
             } else {
                 g.setPaint(Color.GREEN.darker());
             }
@@ -153,11 +158,18 @@ public class Grafo extends javax.swing.JPanel {
             g.setColor(Color.WHITE.brighter());
             g.drawString(nodo, x - 3, y-2);
             g.setColor(Color.ORANGE.brighter());
+            nodos.get(nodo).setX(x);
             String valor=String.valueOf(nodos.get(nodo).getValor());
             g.drawString(valor, x - (3*valor.length()), y + 12);
         }
     }
-
+    public void resaltar(String nodoEvaluado,boolean ejecutando){
+        this.nodoEvaluado=nodoEvaluado;this.ejecutando=ejecutando;
+        repaint();
+    }
+    public void setColor(Color color){
+        colorVar=color;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -170,11 +182,11 @@ public class Grafo extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                formMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 formMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
             }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -228,8 +240,8 @@ public class Grafo extends javax.swing.JPanel {
                 principal.setValueState(nodosG.size(), aristasG.size());
             }
             repaint();
-            principal.desactivarSeleccionNodo();
-            gnodo = false;
+            //principal.desactivarSeleccionNodo();
+            //gnodo = false;
         } else {
             if (gselect) {
                 nodoSelect = getNodo(evt.getX(), evt.getY());
@@ -348,14 +360,14 @@ public class Grafo extends javax.swing.JPanel {
     }
 
     public void eliminar() {
-        print(gselect + "   " + nodoSelect);
+        //print(gselect + "   " + nodoSelect);
         if (gselect && nodoSelect != null) {
             if (!aristasG.isEmpty()) {
                 int tm = aristasG.size() - 1;
                 for (int i = tm; i >= 0; i--) {
                     String[] get = aristasG.get(i);
                     if (nodoSelect.equals(get[0]) || nodoSelect.equals(get[1])) {
-                        print(get[0] + "   " + get[1] + "   :  " + i + "   " + nodoSelect);
+                        //print(get[0] + "   " + get[1] + "   :  " + i + "   " + nodoSelect);
                         aristasG.remove(i);
                         aristas.remove(get[0]+get[1]);
                     }
@@ -366,6 +378,10 @@ public class Grafo extends javax.swing.JPanel {
             principal.setValueState(nodosG.size(), aristasG.size());
             repaint();
         }
+    }
+    
+    public void ejecutar(){
+        
     }
 
     public static void print(Object o) {

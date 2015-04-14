@@ -7,13 +7,12 @@ package GUI;
 
 import Utilitarios.Validacion;
 import java.util.HashMap;
-
 /**
  *
  * @author Karlo
  */
 public class Ingresos extends javax.swing.JDialog {
-
+    int xa,ya;
     /**
      * Creates new form Ingresos
      */
@@ -21,6 +20,7 @@ public class Ingresos extends javax.swing.JDialog {
     HashMap<String,int[]> nodos;
     public Ingresos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
         estado=false;
@@ -61,10 +61,25 @@ public class Ingresos extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         valor = new javax.swing.JTextField();
         error2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        titulo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        nombre.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        nombre.setForeground(new java.awt.Color(255, 255, 255));
         nombre.setText("Nombre");
+        getContentPane().add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 82, -1));
 
         ingreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +94,7 @@ public class Ingresos extends javax.swing.JDialog {
                 ingresoKeyPressed(evt);
             }
         });
+        getContentPane().add(ingreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 109, -1));
 
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +102,7 @@ public class Ingresos extends javax.swing.JDialog {
                 aceptarActionPerformed(evt);
             }
         });
+        getContentPane().add(aceptar, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 110, 90, -1));
 
         cancelar.setText("Cancelar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -93,14 +110,20 @@ public class Ingresos extends javax.swing.JDialog {
                 cancelarActionPerformed(evt);
             }
         });
+        getContentPane().add(cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 82, -1));
 
         error.setFont(new java.awt.Font("TINspireKeysCX", 0, 13)); // NOI18N
         error.setForeground(new java.awt.Color(255, 51, 51));
         error.setText("X");
         error.setToolTipText("Error de nombre");
+        getContentPane().add(error, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, 15, -1));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Valor");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
+        valor.setText("0");
         valor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 valorActionPerformed(evt);
@@ -114,59 +137,22 @@ public class Ingresos extends javax.swing.JDialog {
                 valorKeyPressed(evt);
             }
         });
+        getContentPane().add(valor, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 109, -1));
 
         error2.setFont(new java.awt.Font("TINspireKeysCX", 0, 13)); // NOI18N
         error2.setForeground(new java.awt.Color(255, 51, 51));
         error2.setText("X");
         error2.setToolTipText("Error de valor");
+        getContentPane().add(error2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 15, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 25, 120, 10));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(aceptar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(57, 57, 57)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ingreso, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(valor))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(error2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombre)
-                    .addComponent(ingreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(error))
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(error2))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(aceptar)
-                    .addComponent(cancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        titulo.setFont(new java.awt.Font("Segoe UI Semilight", 0, 24)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setText("Ingreso");
+        getContentPane().add(titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 3, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/fondo.jpg"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 160));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -213,6 +199,20 @@ public class Ingresos extends javax.swing.JDialog {
             evaluar();
         }
     }//GEN-LAST:event_valorKeyPressed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        if(ya<42){
+            int xp, yp;
+            xp = evt.getXOnScreen();
+            yp = evt.getYOnScreen();
+            move(xp - xa, yp - ya);
+        }
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        xa = evt.getX();
+        ya = evt.getY();
+    }//GEN-LAST:event_formMouseMoved
     public void evaluar(){
         if(Validacion.validarNombre(ingreso.getText())){
             if(!nodos.containsKey(ingreso.getText())){
@@ -275,7 +275,10 @@ public class Ingresos extends javax.swing.JDialog {
     private javax.swing.JLabel error2;
     private javax.swing.JTextField ingreso;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel nombre;
+    private javax.swing.JLabel titulo;
     private javax.swing.JTextField valor;
     // End of variables declaration//GEN-END:variables
 }

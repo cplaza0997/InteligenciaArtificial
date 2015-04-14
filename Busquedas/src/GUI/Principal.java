@@ -8,18 +8,16 @@ package GUI;
 import busquedas.Arista;
 import busquedas.Nodo;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.swing.ImageIcon;
 
 /**
  *
- * @author Karlo
+ * @author Carlos Plaza
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -28,11 +26,14 @@ public class Principal extends javax.swing.JFrame {
     HashMap<String,Nodo> nodos;
     HashMap<String,Arista> aristas;
     boolean gnodo,garista,gmove,gselect,geliminar;
-    Grafo grafoG;
+    AreaGrafo grafoG;
+    Resultados resultados;
+    int xa,ya;
     /**
      * Creates new form Principal
      */
     public Principal() {
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
         nodosG=new HashMap<String, int[]>();
@@ -40,11 +41,11 @@ public class Principal extends javax.swing.JFrame {
         //
         nodos=new HashMap<String, Nodo>();
         aristas=new HashMap<String,Arista>();
-        grafoG=new Grafo(this);
+        grafoG=new AreaGrafo(this);
         grafoG.setBackground(Color.white);
         grafoG.setArreglos(nodosG,aristasG);
         grafoG.setArreglos2(nodos,aristas);
-        grafoG.setSize(900,700);
+        grafoG.setSize(965,700);
         grafoG.setLocation(0,0);
         grafoG.setVisible(true);
         contenedor1.add(grafoG);
@@ -53,13 +54,20 @@ public class Principal extends javax.swing.JFrame {
         gmove=false;
         gselect=false;
         geliminar=false;
+        resultados = new Resultados(null, true);
+        //setFondo();
+        
+        resultados.setLocation(this.getX()+this.getWidth()-resultados.getWidth(), this.getY()+this.getHeight()-resultados.getHeight());
     }
 
-    
+    public void setFondo(){
+        ImageIcon imgIcon = new ImageIcon(getClass().getResource("/Icons/fondo_g.jpg"));
+        Image image = imgIcon.getImage().getScaledInstance(this.getWidth()+50,this.getHeight(), Image.SCALE_SMOOTH);
+        fondo.setIcon(new ImageIcon(image));
+    }
     public void desactivarSeleccionNodo(){
         gnodo=false;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,21 +98,42 @@ public class Principal extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JToolBar.Separator();
         jToolBar4 = new javax.swing.JToolBar();
         ejecutar = new javax.swing.JButton();
+        ver = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        separadorTitulo = new javax.swing.JSeparator();
+        power = new javax.swing.JLabel();
+        minimizar = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
+        icono = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(1000, 800));
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setToolTipText("Eliminar");
         jToolBar1.setBorderPainted(false);
+        jToolBar1.setOpaque(false);
 
         insertNodo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/nodo.png"))); // NOI18N
         insertNodo.setToolTipText("Nodo");
         insertNodo.setFocusPainted(false);
+        insertNodo.setOpaque(false);
         insertNodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertNodoActionPerformed(evt);
@@ -114,6 +143,7 @@ public class Principal extends javax.swing.JFrame {
 
         insertArc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/connectorc.png"))); // NOI18N
         insertArc.setToolTipText("Arista");
+        insertArc.setOpaque(false);
         insertArc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertArcActionPerformed(evt);
@@ -122,42 +152,65 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1.add(insertArc);
         jToolBar1.add(jSeparator2);
 
+        getContentPane().add(jToolBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 80, 43, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Graficar");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 57, 59, -1));
 
         contenedor1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         contenedor1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        contenedor1.setOpaque(false);
 
         javax.swing.GroupLayout contenedor1Layout = new javax.swing.GroupLayout(contenedor1);
         contenedor1.setLayout(contenedor1Layout);
         contenedor1Layout.setHorizontalGroup(
             contenedor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 967, Short.MAX_VALUE)
+            .addGap(0, 968, Short.MAX_VALUE)
         );
         contenedor1Layout.setVerticalGroup(
             contenedor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 715, Short.MAX_VALUE)
+            .addGap(0, 679, Short.MAX_VALUE)
         );
 
-        jLabel2.setText("#Nodos:");
+        getContentPane().add(contenedor1, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 54, 970, -1));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("#Nodos:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 739, -1, -1));
+
+        numN.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        numN.setForeground(new java.awt.Color(255, 255, 255));
         numN.setText("0");
         numN.setToolTipText("");
+        getContentPane().add(numN, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 739, 53, -1));
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 739, 14, 16));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("#Aristas:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(206, 739, -1, -1));
 
+        numA.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        numA.setForeground(new java.awt.Color(255, 255, 255));
         numA.setText("0");
+        getContentPane().add(numA, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 739, 49, -1));
 
         jToolBar3.setFloatable(false);
         jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar3.setToolTipText("Eliminar");
         jToolBar3.setBorderPainted(false);
+        jToolBar3.setOpaque(false);
 
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/remove.png"))); // NOI18N
         eliminar.setToolTipText("Eliminar");
         eliminar.setFocusable(false);
         eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        eliminar.setOpaque(false);
         eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,6 +223,7 @@ public class Principal extends javax.swing.JFrame {
         limpiar.setToolTipText("Limpiar");
         limpiar.setFocusable(false);
         limpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        limpiar.setOpaque(false);
         limpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         limpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,15 +233,19 @@ public class Principal extends javax.swing.JFrame {
         jToolBar3.add(limpiar);
         jToolBar3.add(jSeparator6);
 
+        getContentPane().add(jToolBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 367, 39, 88));
+
         jToolBar2.setFloatable(false);
         jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar2.setToolTipText("Eliminar");
         jToolBar2.setBorderPainted(false);
+        jToolBar2.setOpaque(false);
 
         move.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/move.png"))); // NOI18N
         move.setToolTipText("Mover");
         move.setFocusable(false);
         move.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        move.setOpaque(false);
         move.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         move.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,6 +258,7 @@ public class Principal extends javax.swing.JFrame {
         select.setToolTipText("Seleccionar");
         select.setFocusable(false);
         select.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        select.setOpaque(false);
         select.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -209,10 +268,13 @@ public class Principal extends javax.swing.JFrame {
         jToolBar2.add(select);
         jToolBar2.add(jSeparator5);
 
+        getContentPane().add(jToolBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 279, 39, -1));
+
         jToolBar4.setFloatable(false);
         jToolBar4.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar4.setToolTipText("Eliminar");
         jToolBar4.setBorderPainted(false);
+        jToolBar4.setOpaque(false);
 
         ejecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/ejecutar.png"))); // NOI18N
         ejecutar.setToolTipText("Ejecutar");
@@ -225,78 +287,76 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jToolBar4.add(ejecutar);
+
+        ver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/see.png"))); // NOI18N
+        ver.setToolTipText("Ver resultados");
+        ver.setFocusable(false);
+        ver.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ver.setOpaque(false);
+        ver.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verActionPerformed(evt);
+            }
+        });
+        jToolBar4.add(ver);
         jToolBar4.add(jSeparator1);
 
+        getContentPane().add(jToolBar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 179, 39, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Ejecutar");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 156, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Seleccion");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 256, -1, -1));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Eliminar");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 350, 54, -1));
+        getContentPane().add(separadorTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 42, 850, 10));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numN, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numA, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(contenedor1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(317, 317, 317))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel6)
-                        .addGap(1, 1, 1)
-                        .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(contenedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(numA, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(numN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        power.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/power.png"))); // NOI18N
+        power.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        power.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                powerMouseClicked(evt);
+            }
+        });
+        getContentPane().add(power, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 10, 20, 30));
+
+        minimizar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        minimizar.setForeground(new java.awt.Color(0, 204, 0));
+        minimizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minimizar.setText("_");
+        minimizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        minimizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimizarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(minimizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 10, -1, -1));
+
+        titulo.setFont(new java.awt.Font("Segoe UI Semilight", 1, 24)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setText("Busquedas");
+        getContentPane().add(titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, 30));
+
+        icono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/tree.png"))); // NOI18N
+        getContentPane().add(icono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 40, 30));
+
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        getContentPane().add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 54, 5, 681));
+
+        fondo.setBackground(new java.awt.Color(102, 102, 102));
+        fondo.setFont(new java.awt.Font("Segoe UI Semilight", 1, 13)); // NOI18N
+        fondo.setForeground(new java.awt.Color(255, 255, 255));
+        fondo.setOpaque(true);
+        getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1080, 770));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -307,10 +367,6 @@ public class Principal extends javax.swing.JFrame {
         gselect=false;
         if (gnodo){gnodo = false;}else {gnodo = true;}
         enviarEstados();
-        /*g.setPaint( Color.BLACK);
-         Line2D.Double dlinea = new Line2D.Double( 10,10,20,10);
-         g.draw( dlinea );
-         area.revalidate();*/
     }//GEN-LAST:event_insertNodoActionPerformed
 
     private void insertArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertArcActionPerformed
@@ -347,12 +403,49 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        
         grafoG.eliminar();
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void ejecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarActionPerformed
         formarGrafo();
+        Buscar dialog = new Buscar(new javax.swing.JFrame(), true);
+        dialog.setVisible(true);
+        if(dialog.esValido()){
+             Ejecucion ej=new Ejecucion(resultados,grafoG,nodos.get(dialog.getOrigen()), aristas,dialog.getDestinos(),nodos.size(),dialog.getTiempo(),dialog.graficar());
+            ej.start();
+            resultados.setVisible(true);
+        }
+        
+        //grafoG.ejecutar();
     }//GEN-LAST:event_ejecutarActionPerformed
+
+    private void verActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verActionPerformed
+        resultados.setVisible(true);
+    }//GEN-LAST:event_verActionPerformed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        if(ya<42){
+            int xp, yp;
+            xp = evt.getXOnScreen();
+            yp = evt.getYOnScreen();
+            move(xp - xa, yp - ya);
+        }
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        xa = evt.getX();
+        ya = evt.getY();
+    }//GEN-LAST:event_formMouseMoved
+
+    private void powerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_powerMouseClicked
+         System.exit(0);
+    }//GEN-LAST:event_powerMouseClicked
+
+    private void minimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizarMouseClicked
+        // TODO add your handling code here:
+        this.setExtendedState(1);
+    }//GEN-LAST:event_minimizarMouseClicked
     public void enviarEstados(){
         grafoG.setActividadNodo(gnodo);
         grafoG.setActividadArista(garista);
@@ -368,14 +461,23 @@ public class Principal extends javax.swing.JFrame {
     numA.setText(String.valueOf(numAr));
     }
     public void formarGrafo(){
+        reiniciar();
         Iterator<Arista> it = aristas.values().iterator();
         while(it.hasNext()){
             Arista ar=it.next();
             //ar.getNodo1();
-            print(nodos+"  "+ar.getNodo1()+"  "+ar.getNodo2());
+            //print(nodos+"  "+ar.getNodo1()+"  "+ar.getNodo2());
             nodos.get(ar.getNodo1()).setNodo(nodos.get(ar.getNodo2()));
             nodos.get(ar.getNodo2()).setNodo(nodos.get(ar.getNodo1()));
-        }
+        } 
+        //ordenar();
+    }
+    public void reiniciar(){
+        Iterator<Map.Entry<String, Nodo>> it = nodos.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<String, Nodo> next = it.next();
+            next.getValue().reiniciar();//.ordenar(nodosG);
+        } 
     }
     /**
      * @param args the command line arguments
@@ -416,6 +518,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel contenedor1;
     private javax.swing.JButton ejecutar;
     private javax.swing.JButton eliminar;
+    private javax.swing.JLabel fondo;
+    private javax.swing.JLabel icono;
     private javax.swing.JButton insertArc;
     private javax.swing.JButton insertNodo;
     private javax.swing.JLabel jLabel1;
@@ -427,6 +531,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar jToolBar1;
@@ -434,9 +539,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar3;
     private javax.swing.JToolBar jToolBar4;
     private javax.swing.JButton limpiar;
+    private javax.swing.JLabel minimizar;
     private javax.swing.JButton move;
     private javax.swing.JLabel numA;
     private javax.swing.JLabel numN;
+    private javax.swing.JLabel power;
     private javax.swing.JButton select;
+    private javax.swing.JSeparator separadorTitulo;
+    private javax.swing.JLabel titulo;
+    private javax.swing.JButton ver;
     // End of variables declaration//GEN-END:variables
 }
